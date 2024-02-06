@@ -20,7 +20,6 @@ def actualizar_fecha():
 
 def actualizar_temperatura():
     temperatura = "T(°C): " +str(arduino.readline().decode().replace("\n", ""))
-    print(temperatura)
     label_temperatura.config(text=temperatura)
     root.after(500, actualizar_temperatura)
 
