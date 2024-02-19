@@ -2,6 +2,7 @@ from tkinter import Tk, Button, Label
 import serial
 import time
 from datetime import datetime
+import struct
 
 arduino = serial.Serial('COM2',  2400)
 time.sleep(2)
@@ -19,8 +20,11 @@ def actualizar_fecha():
     root.after(1000, actualizar_fecha)
 
 def actualizar_temperatura():
-    temperatura = "T(°C): " +str(arduino.readline().decode().replace("\n", ""))
+    data = str(arduino.readline().decode().replace("\n", ""))
+    temperatura = "T(°C): " + data[:5]
+    humedad = "H(%): " + data[6:11]
     label_temperatura.config(text=temperatura)
+    label_humedad.config(text=humedad)
     root.after(500, actualizar_temperatura)
 
 root = Tk()
@@ -33,6 +37,8 @@ actualizar_fecha()
 
 label_temperatura = Label(root)
 label_temperatura.pack()
+label_humedad = Label(root)
+label_humedad.pack()
 actualizar_temperatura()
 
 label_insano = Label(root, text="COMING SOON")
